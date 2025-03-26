@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Vocacional Colegio Universitario Boston</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #1a73e8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #1557b0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 10px 15px;
+            background: #f0f2f5;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+        }
+
+        .results {
+            text-align: center;
+        }
+
+        .results h2 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+
+        .results ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .results li {
+            background: #f0f2f5;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Vocacional Colegio Universitario Boston</h1>
+        <div id="form-container">
+            <h2>Por favor, completa tus datos antes de iniciar el test</h2>
+            <div class="form-group">
+                <label for="name">Nombre completo:</label>
+                <input type="text" id="name" placeholder="Ingresa tu nombre">
+            </div>
+            <div class="form-group">
+                <label for="age">Edad:</label>
+                <input type="number" id="age" placeholder="Ingresa tu edad">
+            </div>
+            <button onclick="startTest()">Iniciar Test</button>
+        </div>
+        <div id="test-container" class="hidden">
+            <!-- Aquí se mostrarán las preguntas del test -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "¿Te consideras una persona organizada?", value: "Administración" },
+            { question: "¿Disfrutas trabajar con números y realizar cálculos?", value: "Contabilidad" },
+            { question: "¿Te gusta ayudar a las personas a resolver problemas?", value: "Gestión del Talento Humano" },
+            { question: "¿Eres creativo y disfrutas idear nuevas formas de hacer las cosas?", value: "Mercadeo" },
+            { question: "¿Te interesa aprender cómo funcionan los sistemas tecnológicos?", value: "Informática" },
+            { question: "¿Te preocupa la seguridad y el bienestar de las personas en el trabajo?", value: "Salud Ocupacional" },
+            { question: "¿Te gusta liderar equipos y tomar decisiones importantes?", value: "Administración" },
+            { question: "¿Disfrutas analizar datos financieros y presupuestos?", value: "Contabilidad" },
+            { question: "¿Te interesa mejorar el ambiente laboral de las personas?", value: "Gestión del Talento Humano" },
+            { question: "¿Te apasiona diseñar estrategias de marketing?", value: "Mercadeo" },
+            { question: "¿Te sientes cómodo trabajando con software y hardware?", value: "Informática" },
+            { question: "¿Te interesa prevenir riesgos laborales?", value: "Salud Ocupacional" },
+            { question: "¿Eres bueno organizando eventos y actividades?", value: "Administración" },
+            { question: "¿Te gusta trabajar con hojas de cálculo y reportes?", value: "Contabilidad" },
+            { question: "¿Te interesa capacitar y desarrollar a otras personas?", value: "Gestión del Talento Humano" },
+            { question: "¿Te gusta crear contenido visual y publicitario?", value: "Mercadeo" },
+            { question: "¿Te interesa la ciberseguridad y la protección de datos?", value: "Informática" },
+            { question: "¿Te preocupa la salud y seguridad de los empleados?", value: "Salud Ocupacional" },
+            { question: "¿Te gusta planificar y coordinar proyectos?", value: "Administración" },
+            { question: "¿Disfrutas realizar auditorías y análisis financieros?", value: "Contabilidad" },
+            { question: "¿Te interesa resolver conflictos en el lugar de trabajo?", value: "Gestión del Talento Humano" },
+            { question: "¿Te apasiona el diseño de campañas publicitarias?", value: "Mercadeo" },
+            { question: "¿Te interesa desarrollar aplicaciones y páginas web?", value: "Informática" },
+            { question: "¿Te gusta implementar medidas de seguridad en el trabajo?", value: "Salud Ocupacional" },
+            { question: "¿Eres bueno gestionando recursos y presupuestos?", value: "Administración" },
+            { question: "¿Te interesa la contabilidad fiscal y tributaria?", value: "Contabilidad" },
+            { question: "¿Te gusta trabajar en la selección de personal?", value: "Gestión del Talento Humano" },
+            { question: "¿Te interesa analizar el comportamiento del consumidor?", value: "Mercadeo" },
+            { question: "¿Te apasiona la tecnología y la innovación?", value: "Informática" }
+        ];
+
+        let currentQuestion = 0;
+        let scores = {};
+
+        function startTest() {
+            const name = document.getElementById("name").value;
+            const age = document.getElementById("age").value;
+
+            if (!name || !age) {
+                alert("Por favor, completa todos los campos antes de iniciar el test.");
+                return;
+            }
+
+            document.getElementById("form-container").classList.add("hidden");
+            document.getElementById("test-container").classList.remove("hidden");
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const container = document.getElementById("test-container");
+            const question = questions[currentQuestion];
+
+            container.innerHTML = `
+                <div class="question">${question.question}</div>
+                <div class="options">
+                    <div class="option" onclick="selectOption('${question.value}', 5)">Totalmente de acuerdo</div>
+                    <div class="option" onclick="selectOption('${question.value}', 4)">De acuerdo</div>
+                    <div class="option" onclick="selectOption('${question.value}', 3)">Neutral</div>
+                    <div class="option" onclick="selectOption('${question.value}', 2)">En desacuerdo</div>
+                    <div class="option" onclick="selectOption('${question.value}', 1)">Totalmente en desacuerdo</div>
+                </div>
+            `;
+        }
+
+        function selectOption(value, score) {
+            if (!scores[value]) {
+                scores[value] = 0;
+            }
+            scores[value] += score;
+
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            const container = document.getElementById("test-container");
+            const sortedScores = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const topCareers = sortedScores.slice(0, 2);
+
+            container.innerHTML = `
+                <div class="results">
+                    <h2>Resultados del Test</h2>
+                    <p>Basado en tus respuestas, te sugerimos explorar las siguientes áreas:</p>
+                    <ul>
+                        ${topCareers.map(([career]) => `<li>${career}</li>`).join("")}
+                    </ul>
+                    <button onclick="restartTest()">Reiniciar Test</button>
+                </div>
+            `;
+        }
+
+        function restartTest() {
+            currentQuestion = 0;
+            scores = {};
+            document.getElementById("form-container").classList.remove("hidden");
+            document.getElementById("test-container").classList.add("hidden");
+        }
+    </script>
+</body>
+</html>
